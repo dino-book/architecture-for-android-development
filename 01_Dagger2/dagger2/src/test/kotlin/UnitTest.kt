@@ -1,5 +1,7 @@
 import di.DaggerMyComponent
+import di.DaggerPersonComponent
 import model.MyClass
+import model.PersonB
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -7,7 +9,7 @@ class UnitTest {
     @Test
     fun hello_world() {
         val myComponent = DaggerMyComponent.create()
-        assertEquals(myComponent.getString(), "Austen")
+        assertEquals(myComponent.getString(), NAME)
     }
 
     @Test
@@ -32,6 +34,26 @@ class UnitTest {
 
         string = myClass.string
 
-        assertEquals(string, "Austen")
+        assertEquals(string, NAME)
+    }
+
+    @Test
+    fun person_injection() {
+        val personComponent = DaggerPersonComponent.create()
+
+        val personA = personComponent.getPersonA()
+        assertEquals(personA.name, NAME)
+        assertEquals(personA.birthday, BIRTHDAY)
+
+        val personB = PersonB()
+        personComponent.inject(personB)
+        assertEquals(personB.name, NAME)
+        assertEquals(personB.birthday, BIRTHDAY)
+
+    }
+
+    companion object {
+        private const val NAME = "Austen"
+        private const val BIRTHDAY = 1991
     }
 }
