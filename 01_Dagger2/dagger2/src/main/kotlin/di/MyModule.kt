@@ -3,6 +3,7 @@ package di
 import dagger.Module
 import dagger.Provides
 import model.Person
+import model.SomeType
 
 @Module
 class MyModule {
@@ -30,5 +31,10 @@ class MyModule {
     @Provides
     fun provideDouble(): Double? {
         return null
+    }
+
+    @Provides
+    fun provideSomeType(): SomeType {
+        return SomeType()
     }
 }

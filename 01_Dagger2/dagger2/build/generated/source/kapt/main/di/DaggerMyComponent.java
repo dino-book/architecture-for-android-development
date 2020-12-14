@@ -2,6 +2,9 @@ package di;
 
 import dagger.internal.Preconditions;
 import javax.annotation.processing.Generated;
+import model.MyClass;
+import model.MyClass_MembersInjector;
+import model.SomeType;
 
 @Generated(
     value = "dagger.internal.codegen.ComponentProcessor",
@@ -33,6 +36,27 @@ public final class DaggerMyComponent implements MyComponent {
   @Override
   public Double getDouble() {
     return myModule.provideDouble();}
+
+  @Override
+  public SomeType getSomeType() {
+    return MyModule_ProvideSomeTypeFactory.provideSomeType(myModule);}
+
+  @Override
+  public void injectSomeType(SomeType someType) {
+  }
+
+  @Override
+  public void injectAndReturnSomeType(SomeType someType) {
+  }
+
+  @Override
+  public void inject(MyClass myClass) {
+    injectMyClass(myClass);}
+
+  private MyClass injectMyClass(MyClass instance) {
+    MyClass_MembersInjector.injectString(instance, MyModule_ProvideNameFactory.provideName(myModule));
+    return instance;
+  }
 
   public static final class Builder {
     private MyModule myModule;
