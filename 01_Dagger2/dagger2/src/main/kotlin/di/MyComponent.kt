@@ -1,5 +1,6 @@
 package di
 
+import dagger.BindsInstance
 import dagger.Component
 import model.MyClass
 import model.SomeType
@@ -17,4 +18,24 @@ interface MyComponent {
     fun injectAndReturnSomeType(someType: SomeType)
 
     fun inject(myClass: MyClass)
+
+    /**
+    @Component.Builder
+    interface Builder {
+        fun myModule(myModule: MyModule): Builder
+        @BindsInstance
+        fun someType(someType: SomeType)
+        fun build(): MyComponent
+    }
+     */
+    
+    /**
+    @Component.Factory
+    interface Factory {
+        fun newMyComponent(
+            myModule: MyModule,
+            @BindsInstance someType: SomeType
+        ): MyComponent
+    }
+     */
 }
