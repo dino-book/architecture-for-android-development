@@ -1,5 +1,7 @@
+import di.DaggerCounterComponent
 import di.DaggerMyComponent
 import di.DaggerPersonComponent
+import model.Counter
 import model.MyClass
 import model.PersonB
 import org.junit.Assert.*
@@ -49,7 +51,22 @@ class UnitTest {
         personComponent.inject(personB)
         assertEquals(personB.name, NAME)
         assertEquals(personB.birthday, BIRTHDAY)
+    }
+    
+    @Test
+    fun print_lazy() {
+        val counterComponent = DaggerCounterComponent.create()
+        val counter = Counter()
+        counterComponent.inject(counter)
+        counter.printLazy()
+    }
 
+    @Test
+    fun print_provider() {
+        val counterComponent = DaggerCounterComponent.create()
+        val counter = Counter()
+        counterComponent.inject(counter)
+        counter.printProvider()
     }
 
     companion object {
