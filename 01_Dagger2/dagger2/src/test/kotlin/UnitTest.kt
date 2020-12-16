@@ -1,12 +1,9 @@
-import di.DaggerCounterComponent
-import di.DaggerMyComponent
-import di.DaggerPersonComponent
-import di.DaggerSingletonComponent
-import model.Counter
-import model.MyClass
-import model.PersonB
+import di.*
+import di.component.*
+import model.*
 import org.junit.Assert.*
 import org.junit.Test
+import java.util.NoSuchElementException
 
 class UnitTest {
     @Test
@@ -90,10 +87,35 @@ class UnitTest {
         assertSame(any1, any2)
     }
 
+    @Test
+    fun foo() {
+        val foo = Foo()
+
+        DaggerStrComponent.create().inject(foo)
+        assertTrue(foo.str.isPresent)
+        assertEquals(foo.str.get(), HELLO_WORLD)
+
+        DaggerNoStrComponent.create().inject(foo)
+        assertFalse(foo.str.isPresent)
+        assertThrows(NoSuchElementException::class.java) {
+            foo.str.get()
+        }
+    }
+
+    @Test
+    fun bindsInstance() {
+        val bind = Bind()
+
+        val bindsComponent = DaggerBindsComponent.builder()
+            .setString(HELLO_WORLD)
+            .build()
+        bindsComponent.inject(bind)
+        assertEquals(bind.str, HELLO_WORLD)
+    }
+
     companion object {
         private const val NAME = "Austen"
         private const val BIRTHDAY = 1991
         private const val HELLO_WORLD = "Hello World"
     }
-}
 }
