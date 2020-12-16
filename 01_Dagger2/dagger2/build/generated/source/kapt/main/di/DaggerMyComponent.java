@@ -55,6 +55,7 @@ public final class DaggerMyComponent implements MyComponent {
 
   private MyClass injectMyClass(MyClass instance) {
     MyClass_MembersInjector.injectString(instance, MyModule_ProvideNameFactory.provideName(myModule));
+    MyClass_MembersInjector.injectHelloWorld(instance, MyModule_ProvideHelloWorldFactory.provideHelloWorld(myModule));
     return instance;
   }
 

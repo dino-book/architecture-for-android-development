@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import model.Person
 import model.SomeType
+import javax.inject.Named
 
 @Module
 class MyModule {
@@ -12,6 +13,13 @@ class MyModule {
 //    fun provideHelloWorld(): String {
 //        return "Hello World"
 //    }
+
+    // @Named 애너테이션을 통해 같은 타입의 의존성을 식별할 수 있다.
+    @Provides
+    @Named("HelloWorld")
+    fun provideHelloWorld(): String {
+        return "Hello World"
+    }
 
     @Provides
     fun provideName(): String {

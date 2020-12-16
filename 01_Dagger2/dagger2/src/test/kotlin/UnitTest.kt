@@ -1,6 +1,7 @@
 import di.DaggerCounterComponent
 import di.DaggerMyComponent
 import di.DaggerPersonComponent
+import di.DaggerSingletonComponent
 import model.Counter
 import model.MyClass
 import model.PersonB
@@ -69,8 +70,30 @@ class UnitTest {
         counter.printProvider()
     }
 
+    @Test
+    fun named() {
+        val myComponent = DaggerMyComponent.create()
+        val myClass = MyClass()
+        myComponent.inject(myClass)
+
+        assertEquals(myClass.helloWorld, HELLO_WORLD)
+    }
+
+    @Test
+    fun any_identity() {
+        val singletonComponent = DaggerSingletonComponent.create()
+        val any1 = singletonComponent.getAny()
+        val any2 = singletonComponent.getAny()
+
+        assertNotNull(any1)
+        assertNotNull(any2)
+        assertSame(any1, any2)
+    }
+
     companion object {
         private const val NAME = "Austen"
         private const val BIRTHDAY = 1991
+        private const val HELLO_WORLD = "Hello World"
     }
+}
 }
