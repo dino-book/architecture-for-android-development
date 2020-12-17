@@ -113,6 +113,15 @@ class UnitTest {
         assertEquals(bind.str, HELLO_WORLD)
     }
 
+    @Test
+    fun into_set_multi_binding() {
+        val foo = SetFoo()
+
+        DaggerSetComponent.create().inject(foo)
+
+        assertEquals(foo.strings, setOf("Hello", "World", "Austen", "Lee"))
+    }
+
     companion object {
         private const val NAME = "Austen"
         private const val BIRTHDAY = 1991
