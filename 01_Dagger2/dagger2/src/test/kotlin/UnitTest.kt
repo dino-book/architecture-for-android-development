@@ -122,6 +122,32 @@ class UnitTest {
         assertEquals(foo.strings, setOf("Hello", "World", "Austen", "Lee"))
     }
 
+    @Test
+    fun into_map_multi_binding() {
+        val mapComponent = DaggerMapComponent.create()
+        val value = mapComponent.getLongsByString()["foo"]
+        val string = mapComponent.getStringsByClass()[MapFoo::class.java]
+
+        assertEquals(value, 100L)
+        assertEquals(string, "Foo String")
+    }
+
+    @Test
+    fun custom_map_key() {
+        val mapKeyComponent = DaggerMapKeyComponent.create()
+        val cat = mapKeyComponent.getStringsByAnimal()[Animal.CAT]
+        val dog = mapKeyComponent.getStringsByAnimal()[Animal.DOG]
+
+        assertEquals(cat, "MEOW")
+        assertEquals(dog, "BOW-WOW")
+
+        val float = mapKeyComponent.getStringsByNumber()[Float::class.java]
+        val int = mapKeyComponent.getStringsByNumber()[Int::class.java]
+
+        assertEquals(float, "100f")
+        assertEquals(int, "1")
+    }
+
     companion object {
         private const val NAME = "Austen"
         private const val BIRTHDAY = 1991
