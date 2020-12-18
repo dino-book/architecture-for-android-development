@@ -148,6 +148,18 @@ class UnitTest {
         assertEquals(int, "1")
     }
 
+    @Test
+    fun multi_binding_with_subcomponent() {
+        val superComponent = DaggerSuperComponent.create()
+
+        assertEquals(superComponent.strings(), setOf("parent string 1", "parent string 2"))
+
+        val subComponent = superComponent.subComponentBuilder().build()
+
+        assertEquals(subComponent.strings(), setOf("parent string 1", "parent string 2", "child string 1", "child string 2"))
+
+    }
+
     companion object {
         private const val NAME = "Austen"
         private const val BIRTHDAY = 1991
