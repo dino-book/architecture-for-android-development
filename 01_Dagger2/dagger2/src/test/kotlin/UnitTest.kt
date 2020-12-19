@@ -157,7 +157,13 @@ class UnitTest {
         val subComponent = superComponent.subComponentBuilder().build()
 
         assertEquals(subComponent.strings(), setOf("parent string 1", "parent string 2", "child string 1", "child string 2"))
+    }
 
+    @Test
+    fun multi_binds() {
+        val multiBindsComponent = DaggerMultiBindsComponent.create()
+
+        assertTrue(multiBindsComponent.getStrings().isEmpty())
     }
 
     companion object {
