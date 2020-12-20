@@ -166,6 +166,13 @@ class UnitTest {
         assertTrue(multiBindsComponent.getStrings().isEmpty())
     }
 
+    @Test
+    fun order_coffee() {
+        val cafe = Cafe()
+
+        println(cafe.orderCoffee())
+    }
+
     companion object {
         private const val NAME = "Austen"
         private const val BIRTHDAY = 1991
