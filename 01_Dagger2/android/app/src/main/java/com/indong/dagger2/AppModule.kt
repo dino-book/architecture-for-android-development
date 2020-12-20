@@ -1,24 +1,18 @@
 package com.indong.dagger2
 
-import android.content.Context
-import android.content.SharedPreferences
 import com.indong.dagger2.main.MainActivity
-import com.indong.dagger2.main.di.MainActivitySubcomponent
-import dagger.Binds
+import com.indong.dagger2.main.di.MainActivityModule
 import dagger.Module
 import dagger.Provides
-import dagger.android.AndroidInjector
-import dagger.multibindings.ClassKey
-import dagger.multibindings.IntoMap
+import dagger.android.ContributesAndroidInjector
 import javax.inject.Named
 import javax.inject.Singleton
 
-@Module(subcomponents = [MainActivitySubcomponent::class])
+@Module
 abstract class AppModule {
-    @Binds
-    @IntoMap
-    @ClassKey(MainActivity::class)
-    abstract fun bindAndroidInjectorFactory(factory: MainActivitySubcomponent.Factory): AndroidInjector.Factory<*>
+    @ActivityScope
+    @ContributesAndroidInjector(modules = [MainActivityModule::class])
+    abstract fun mainActivity(): MainActivity
 
     companion object {
         @Named("app")

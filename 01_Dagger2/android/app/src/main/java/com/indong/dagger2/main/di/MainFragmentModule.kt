@@ -4,7 +4,6 @@ import com.indong.dagger2.FragmentScope
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
-import kotlin.random.Random
 
 @Module
 class MainFragmentModule {

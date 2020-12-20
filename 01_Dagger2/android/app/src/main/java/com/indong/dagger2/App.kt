@@ -1,21 +1,11 @@
 package com.indong.dagger2
 
-import android.app.Application
 import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
+import dagger.android.DaggerApplication
 
-class App : Application(), HasAndroidInjector {
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+class App : DaggerApplication() {
 
-    override fun onCreate() {
-        super.onCreate()
-        DaggerAppComponent.factory().create(this)
-    }
-
-    override fun androidInjector(): AndroidInjector<Any> {
-        return dispatchingAndroidInjector
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerAppComponent.factory().create(this)
     }
 }
