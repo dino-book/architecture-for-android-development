@@ -18,9 +18,21 @@ fun main() {
     buffer()
     scan()
     groupBy()
+
+    debounce()
+    distinct()
+    elementAt()
+    filter()
+    sample()
+    skip()
+    take()
+    all()
+    amb()
 }
 
 fun defer() {
+    println("== defer ==")
+
     val justSrc = Observable.just(System.currentTimeMillis())
     val deferSrc = Observable.defer {
         Observable.just(System.currentTimeMillis())
@@ -39,6 +51,8 @@ fun defer() {
 }
 
 fun empty() {
+    println("== empty ==")
+
     Observable.empty<Nothing>()
         .doOnTerminate {
             println("empty 종료")
@@ -46,6 +60,8 @@ fun empty() {
 }
 
 fun never() {
+    println("== never ==")
+
     Observable.never<Nothing>()
         .doOnTerminate {
             println("empty 종료")
@@ -53,6 +69,8 @@ fun never() {
 }
 
 fun interval() {
+    println("== interval ==")
+
     val disposable = Observable.interval(1L, TimeUnit.SECONDS)
         .subscribe {
             println("interval time : $it")
@@ -64,6 +82,8 @@ fun interval() {
 }
 
 fun range() {
+    println("== range ==")
+
     Observable.range(1, 3)
         .subscribe {
             println(it)
@@ -71,6 +91,8 @@ fun range() {
 }
 
 fun timer() {
+    println("== timer ==")
+
     val src = Observable.timer(1L, TimeUnit.SECONDS)
     println("timer 구독")
     src.subscribe { println("timer 실행!") }
@@ -78,6 +100,8 @@ fun timer() {
 }
 
 fun map() {
+    println("== map ==")
+
     Observable.just(1, 2, 3)
         .map {
             it * 10
@@ -87,6 +111,8 @@ fun map() {
 }
 
 fun flatMap() {
+    println("== flatMap ==")
+
     Observable.just("a", "b", "c")
         .flatMap {
             Observable.just("${it}1", "${it}2")
@@ -96,6 +122,8 @@ fun flatMap() {
 }
 
 fun buffer() {
+    println("== buffer ==")
+
     Observable.range(0, 10)
         .buffer(3)
         .subscribe { numbers ->
@@ -107,6 +135,8 @@ fun buffer() {
 }
 
 fun scan() {
+    println("== scan ==")
+
     Observable.range(1, 5)
         .scan { t1: Int, t2: Int ->
             println("$t1 + $t2 = ${t1 + t2}")
@@ -115,6 +145,8 @@ fun scan() {
 }
 
 fun groupBy() {
+    println("== groupBy ==")
+
     fun classify(item: String): String {
         return when(item.split(" ")[1]) {
             "Circle" -> "C"
@@ -122,6 +154,7 @@ fun groupBy() {
             else -> "None"
         }
     }
+
     Observable.just(
         "Magenta Circle",
         "Cyan Circle",
@@ -137,4 +170,109 @@ fun groupBy() {
             println("${group.key} : $it")
         }
     }
+}
+
+fun debounce() {
+    println("== debounce ==")
+
+    Observable.create<Int> {
+        it.onNext(1)
+        Thread.sleep(100L)
+        it.onNext(2)
+        it.onNext(3)
+        it.onNext(4)
+        Thread.sleep(100L)
+        it.onNext(5)
+    }.debounce(10, TimeUnit.MILLISECONDS)
+        .subscribe { println(it) }
+}
+
+fun distinct() {
+    println("== distinct ==")
+
+    Observable.just(1, 2, 2, 1, 3)
+        .distinct()
+        .subscribe {
+            println(it)
+        }
+}
+
+fun elementAt() {
+    println("== elementAt ==")
+
+    Observable.just(1, 2, 3, 4)
+        .elementAt(2)
+        .subscribe {
+            println(it)
+        }
+}
+
+fun filter() {
+    println("== filter ==")
+
+    Observable.just(2, 30, 22, 5, 60, 1)
+        .filter { number ->
+            number > 10
+        }.subscribe {
+            println(it)
+        }
+}
+
+fun sample() {
+    println("== sample ==")
+
+    val disposable = Observable.interval(100L, TimeUnit.MILLISECONDS)
+        .sample(300L, TimeUnit.MILLISECONDS)
+        .subscribe {
+            println(it)
+        }
+
+    Thread.sleep(1000L)
+
+    disposable.dispose()
+}
+
+fun skip() {
+    println("== skip ==")
+
+    Observable.just(1, 2, 3, 4)
+        .skip(2)
+        .subscribe {
+            println(it)
+        }
+}
+
+fun take() {
+    println("== take ==")
+    Observable.just(1, 2, 3, 4)
+        .take(2)
+        .subscribe {
+            println(it)
+        }
+}
+
+fun all() {
+    println("== all ==")
+
+    Observable.just(2, 1)
+        .all { number ->
+            number > 0
+        }.subscribe { bool: Boolean ->
+            println(bool)
+        }
+}
+
+fun amb() {
+    println("== amb ==")
+
+    val list = listOf(
+        Observable.just(20, 40, 60).delay(100L, TimeUnit.MILLISECONDS),
+        Observable.just(1, 2, 3),
+        Observable.just(0, 0, 0).delay(200L, TimeUnit.MILLISECONDS)
+    )
+
+    Observable.amb(list)
+        .subscribe {
+            println(it)
+        }
 }
